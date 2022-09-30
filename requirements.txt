@@ -1,4 +1,4 @@
-joblib==0.14.0
+joblib==1.2.0
 numpy==1.17.3
 py4j==0.10.7
 pyspark==2.4.4
