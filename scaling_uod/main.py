@@ -1,13 +1,12 @@
 import logging
-import numpy as np
 import os
-import pyspark.sql.functions as sf
-import pyspark.sql.types as st
 import shutil
 
+import numpy as np
+import pyspark.sql.functions as sf
+import pyspark.sql.types as st
 from pyspark.sql import Row, SparkSession
 from sklearn.neighbors import LocalOutlierFactor
-
 
 logging.basicConfig(
     level='INFO',
@@ -17,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 def add_partition_number(df, partition_size, seed):
-    '''Assigns a random partition number to each data elements in a data set.
+    """Assigns a random partition number to each data elements in a data set.
 
     The data set is represented as a Spark DataFrame.
 
     Partition numbers are assigned so that each partition size is approximately 
     equal to partition_size.
-    '''
+    """
     data_size = df.count()
     num_components = max(1, data_size // partition_size)
     df = df.withColumn(
@@ -34,13 +33,13 @@ def add_partition_number(df, partition_size, seed):
 
 
 def get_partition_function(k):
-    '''Defines the function to be applied to each partition.
+    """Defines the function to be applied to each partition.
 
     In this case the function computes the LOF score for each data element 
     in the partition.
 
     The parameter k is used to determine the nearest neighbors for LOF.
-    '''
+    """
 
     def partition_function(row_itr):
         row_list = list(row_itr)
@@ -67,7 +66,7 @@ def get_partition_function(k):
 
 
 def get_spark_session():
-    '''Initializes the Spark Session.'''
+    """Initializes the Spark Session."""
 
     master = 'local[*]'
     return (
@@ -89,7 +88,7 @@ def load_data(spark, filepath):
 
 
 def row_list_to_data_matrix(row_list):
-    '''Converts a list of Spark Rows to a 2-dimensional numpy.ndarray.'''   
+    """Converts a list of Spark Rows to a 2-dimensional numpy.ndarray."""   
     return np.array(
         [
             list(row.asDict().values())
@@ -99,11 +98,11 @@ def row_list_to_data_matrix(row_list):
 
 
 def repartition_unique(df):
-    '''Repartitions the input DataFrame into unique partitions. Returns the repartitioned RDD.
+    """Repartitions the input DataFrame into unique partitions. Returns the repartitioned RDD.
 
     After the repartitioning, all data elements in a partition have the same component_id. This can be 
     extended to include any contextual features.
-    '''
+    """
     
     # Select the distinct values of 'component_id' as a list of Rows
     component_ids = df.select('component_id').distinct().collect()
@@ -132,7 +131,7 @@ def repartition_unique(df):
 
     
 def main():
-    '''Proof-of-Concept of the approach described in "Scaling Unsupervised Outlier Detection: industrial challenges and an effective approach".
+    """Proof-of-Concept of the approach described in "Scaling Unsupervised Outlier Detection: industrial challenges and an effective approach".
 
     Implemented using Apache Spark APIs.
 
@@ -141,7 +140,7 @@ def main():
     - partition the data set with the partitioning scheme described in the paper.
     - computes the Local Outlier Factor (LOF) for each partition independently.
     - save the results to an output file.
-    '''
+    """
     
     INPUT_FILE = 'data/dummy.csv'
     OUTPUT_FILE = 'results.dir/'

@@ -8,18 +8,13 @@ The data sets in this repo are represented using the [ARFF format](https://www.c
 
 ## Installing and running
 
-### Prerequisites
-To run the proof-of-concept in this repo you must have python3 and pip installed.
+Install the software with:
 
-To download the required packages run (we suggest activating a **virtualenv** before running the command):
+```bash
+poetry install
+```
 
-> pip install -r requirements.txt
-
-Also be sure to set the variable SPARK_HOME to point to a valid Apache Spark installation.
-
-This code was tested with Apache Spark version 2.4.4. All packages versions can be found in **requirements.txt**.
-
-### Running
-After all prerequisites are installed, run the proof-of-concept with:
-
-> python3 spark_poc.py
+Run the software with:
+```bash
+poetry run scaling-uod-poc
+```
