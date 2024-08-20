@@ -10,7 +10,7 @@ packages = [{include = "scaling_uod"}]
 scaling-uod-poc = "scaling_uod.main:main"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.10"
+python = ">=3.10"
 pyspark = "^3.3.1"
 scikit-learn = "^1.1.3"
 
